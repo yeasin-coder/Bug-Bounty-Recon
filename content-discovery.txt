@@ -1,0 +1,45 @@
+Target: tryhackme lab content discovery.
+
+Content means text, images, videos, backup files etc.
+
+There are three types of content discovery mechnism:
+1. Manuall content discovery
+2. Using automated tools
+3. OSINT
+
+Let's dive into the first step (Manuall Method):
+==========================================
+
+Step 1: Look at the robots.txt file
+
+Robots.txt file uses to instruct the web crawlers wheather a specific content or area is hidden or not. Suppose the admin want to hide the adminstration portal from public view. 
+
+Checking the robots.txt we can gain some interesting endponts that usually not available at the website. Such as hidden directoris and files.
+
+The default location of robots.txt file is: https://example.com/robots.txt
+
+
+Step 2: Look at the sitemap.xml file
+
+Sitemap.xml is use to instruct web crawlers to index the page or area to the serch engine. We could uncover interesting endpoints by reading the sitemap.xml file. 
+
+The default location of sitemap.xml file is: https://example.com/sitemap.xml
+
+
+Step 3: Check HTTP request and response headers
+
+Send request with burp suit and analyze the request and response headers. Specially pay close attention to the response headers. Here we might get the server informaiton such as server software name and version, programming language used by the application etc.
+
+Or execute the "curl https://example.com -v" command to analyze request and response headers.
+
+
+Automated Tools:
+===============
+
+There are many automated tools available for web application content discovery such as ffuf, gobuster, dirb etc
+
+here is an example of ffuf tool:
+
+ffuf -w /path-to-the-wordlist -u https://target.com/FUZZ -e .php,.html,.js,.zip,.bak,.pdf
+
+this command is for files and directory fuzzing also look for specific file extensions.
