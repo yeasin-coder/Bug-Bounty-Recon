@@ -1,0 +1,25 @@
+Target: https://10-10-233-87.p.thmlabs.com
+
+Short Description: 
+This is a practice lab of tryhackme.com. The ACME IT support company give solutions to cumster about IT problem.
+
+Interesting Endpoints:
+=====================
+
+1. Individual news URL: /news/article?id=1
+
+2. The website has two types of news articles one for normal user and another for premium user.
+
+3. There is a contact form in: /contact
+
+4. User's password reset endpoint: /reset [The password reset functionality completes in two steps first it takes user's email address and then ask for username. Which might be juicy!]
+
+5. User can create password with just only using spaces! which is interesting!
+
+6. Customer's dashboard: /customers. Here shows all of the ticket of the authenticated user.
+
+7. Create support ticket: /customers/tickets. There are two fields support title and support description. The support ticket title maybe vulnerable to XSS!
+
+8. /customers/account. This endpoint is juicy because there are functionality for update username, update email address and update password everything in the different forms. The most interesting thing is the password changing form has only two fields 'New password' and 'Confirm password'.
+
+9. We can access the files from here: /assets/
