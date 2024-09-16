@@ -1,0 +1,32 @@
+Sub domain enumeration process:
+==============================
+
+There are a lot of way and tools available for sub domain enumeration.
+
+crt.sh:
+========
+
+We can find sub domains based SSL/TLS certificates information.
+
+Go to 'https://crt.sh' and search for domain name.
+
+
+Google search:
+=============
+
+Google has a lot advance search filters. We can use these filters to filer out the specific results. For sub domain enumeration we can use a techque:
+
+site:*.target.com -site:www.target.com
+
+this search term will show all sub domains of target.com
+
+
+Virtual Host(this is most important):
+=============
+
+Virtual hosting is method where multiple domain can use the same web server.
+
+we can brute force the virtual host to find more sub domains.
+
+ffuf -w /path-to-the-wordlist -u https://target.com -H "Host: FUZZ.target.com" 
+
