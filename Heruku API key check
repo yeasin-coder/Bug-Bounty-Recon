@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Check if a file argument was provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <keys_file.txt>"
+    exit 1
+fi
+
+INPUT_FILE="$1"
+
+# ANSI Color Codes for clean output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
+
+echo "=================================================="
+echo "      Starting Heroku API Key Verification       "
+echo "=================================================="
+
+# Loop through each line in the file
+while IFS= read -r key || [ -n "$key" ]; do
+    # Trim accidental whitespace or carriage returns from the key string
+    key=$(echo "$key" | tr -d '\r' | xargs)
+    
+    # Skip empty lines
+    if [ -z "$key" ]; then
+        continue
+    fi
+
+    echo -n "Testing key: $key ... "
+
+    # Send request to Heroku's Account Endpoint (faster/safer than loading all apps)
+    # -s: Silent mode (hides curl progress bars)
+    # -o /dev/null: Discards the raw JSON body
+    # -w "%{http_code}": Prints only the numeric HTTP response code
+    status_code=$(curl -s -o /dev/null -w "%{http_code}" https://api.heroku.com/account \
+      -H "Accept: application/vnd.heroku+json; version=3" \
+      -H "Authorization: Bearer $key")
+
+    # Check response status
+    if [ "$status_code" == "200" ]; then
+        echo -e "${GREEN}[+] LIVE KEY FOUND! (HTTP 200)${RESET}"
+        # Save working keys immediately to a separate triage file
+        echo "$key" >> live_heroku_keys.txt
+    elif [ "$status_code" == "401" ]; then
+        echo -e "${RED}[-] Invalid / Dead (HTTP 401)${RESET}"
+    else
+        echo -e "[-] Unknown Response (HTTP $status_code)"
+    fi
+
+done < "$INPUT_FILE"
+
+echo "=================================================="
+echo "Scan complete. Valid keys saved to live_heroku_keys.txt"
