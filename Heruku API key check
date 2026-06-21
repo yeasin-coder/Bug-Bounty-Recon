@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#This code is the check the Heroku API key, or the key valid or dead. At first we have to create a file contained only Heroku API key. 
+# Usages: ./check_heruku.sh heroku_api_keys.txt
+
 # Check if a file argument was provided
 if [ -z "$1" ]; then
     echo "Usage: $0 <keys_file.txt>"
